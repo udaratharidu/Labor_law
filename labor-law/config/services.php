@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'ai_backend' => [
+        'url' => env('AI_BACKEND_URL'),
+    ],
+
 ];
