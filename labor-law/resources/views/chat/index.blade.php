@@ -17,8 +17,12 @@
         </div>
 
         @if ($isNewChat)
-            <div class="mb-6 rounded-xl border border-dashed border-slate-300 bg-white p-6 text-slate-600">
-                New Chat initialized for session: {{ $sessionId }}
+            <div class="mb-6 rounded-xl border border-blue-100 bg-blue-50 p-6 text-blue-900">
+                @auth
+                    Welcome back. Your conversation is ready - ask your first question to begin.
+                @else
+                    Welcome to Legal Assistant. Start your first conversation by asking a consumer law question.
+                @endauth
             </div>
         @endif
 
