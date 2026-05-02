@@ -17,5 +17,6 @@ Route::prefix('auth')->name('auth.')->group(function (): void {
 
 Route::prefix('chat')->name('chat.')->group(function (): void {
     Route::get('/', [ChatController::class, 'index'])->name('index');
+    Route::get('/new', [ChatController::class, 'create'])->name('new');
     Route::post('/', [ChatController::class, 'store'])->name('store');
 });

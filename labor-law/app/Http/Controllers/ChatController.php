@@ -25,8 +25,23 @@ class ChatController extends Controller
 
         return view('chat.index', [
             'chats' => $chats,
+            'history' => $this->getHistory($userId),
             'isNewChat' => $chats->isEmpty(),
             'sessionId' => $sessionId,
+        ]);
+    }
+
+    public function create(Request $request)
+    {
+        if (! Auth::check()) {
+            $request->session()->regenerate();
+        }
+
+        return view('chat.index', [
+            'chats' => collect(),
+            'history' => $this->getHistory(Auth::id()),
+            'isNewChat' => true,
+            'sessionId' => $request->session()->getId(),
         ]);
     }
 
@@ -39,13 +54,34 @@ class ChatController extends Controller
         $sessionId = $request->session()->getId();
         $response = $apiClient->sendChatMessage($validated['message'], Auth::id(), $sessionId);
 
-        Chat::query()->create([
+        $chat = Chat::query()->create([
             'user_id' => Auth::id(),
             'session_id' => $sessionId,
             'message' => $validated['message'],
             'response' => $response,
         ]);
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'id' => $chat->id,
+                'message' => $chat->message,
+                'response' => $chat->response,
+            ]);
+        }
+
         return redirect()->route('chat.index');
+    }
+
+    private function getHistory(?int $userId)
+    {
+        if (! $userId) {
+            return collect();
+        }
+
+        return Chat::query()
+            ->where('user_id', $userId)
+            ->latest('id')
+            ->take(10)
+            ->get(['id', 'message']);
     }
 }
