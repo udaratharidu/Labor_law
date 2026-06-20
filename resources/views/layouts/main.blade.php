@@ -101,13 +101,14 @@
 
                         <div class="sidebar-history-scroll mt-2 min-h-0 max-h-[55vh] flex-1 space-y-1 overflow-y-auto pr-1">
                             @forelse ($historyItems as $item)
+                                @php $title = $item->chat_title ?? 'Untitled Chat'; @endphp
                                 <a
                                     class="block rounded-lg px-3 py-2.5 text-sm text-slate-700 transition-colors hover:bg-blue-50"
-                                    href="{{ route('chat.index') }}"
-                                    x-data="{ title: @js(\Illuminate\Support\Str::lower($item->message)) }"
+                                    href="{{ route('chat.index', ['session' => $item->session_id]) }}"
+                                    x-data="{ title: @js(strtolower($title)) }"
                                     x-show="title.includes(query.toLowerCase())"
                                 >
-                                    <span class="block truncate">{{ \Illuminate\Support\Str::limit($item->message, 20) }}</span>
+                                    <span class="block truncate">{{ \Illuminate\Support\Str::limit($title, 30) }}</span>
                                 </a>
                             @empty
                                 <p class="px-3 py-2 text-sm text-slate-500">No chats yet.</p>

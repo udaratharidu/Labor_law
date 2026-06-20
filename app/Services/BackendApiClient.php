@@ -26,6 +26,19 @@ class BackendApiClient
             'question' => $message,
         ]);
 
+        $token = config('services.ai_backend.token');
+
+        $request = Http::timeout(60);
+
+        if ($token) {
+            $request = $request->withToken($token);
+        }
+
+        $response = $request->post(
+            rtrim($endpoint, '/').'/sessions/'.rawurlencode($sessionId).'/ask',
+            ['question' => $message]
+        );
+
         if ($response->failed()) {
             return 'The AI service is temporarily unavailable.';
         }

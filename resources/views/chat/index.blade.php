@@ -6,12 +6,13 @@
 
 @push('scripts')
 <script>
-    function chatInterface({ initialChats, storeUrl, csrfToken }) {
+    function chatInterface({ initialChats, storeUrl, csrfToken, initialSessionId }) {
         return {
             chats: initialChats ?? [],
             draftMessage: '',
             loading: false,
             errorMessage: '',
+            currentSessionId: initialSessionId ?? '',
             init() {
                 this.scrollToBottom();
                 this.$watch('draftMessage', () => this.autoGrow());
@@ -29,9 +30,7 @@
             },
             async submitMessage() {
                 const message = this.draftMessage.trim();
-                if (!message || this.loading) {
-                    return;
-                }
+                if (!message || this.loading) return;
 
                 this.loading = true;
                 this.errorMessage = '';
@@ -39,6 +38,7 @@
 
                 const formData = new FormData();
                 formData.append('message', message);
+                formData.append('session_id', this.currentSessionId);
 
                 try {
                     const response = await fetch(storeUrl, {
@@ -56,9 +56,15 @@
                     }
 
                     const data = await response.json();
+
+                    // keep track of the session for subsequent messages
+                    if (data.session_id) {
+                        this.currentSessionId = data.session_id;
+                    }
+
                     this.chats.push({
-                        message: data.message,
-                        response: data.response,
+                        user_message: data.user_message,
+                        ai_response: data.ai_response,
                     });
                     this.draftMessage = '';
                     if (this.$refs.messageInput) {
