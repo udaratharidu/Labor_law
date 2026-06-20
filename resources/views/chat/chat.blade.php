@@ -2,9 +2,10 @@
 <div
     class="absolute inset-0 flex min-h-0 flex-col overflow-hidden bg-slate-50"
     x-data="chatInterface({
-        initialChats: @js($chats->map(fn ($chat) => ['message' => $chat->message, 'response' => $chat->response])->values()),
+        initialChats: @js($chats->map(fn ($chat) => ['user_message' => $chat->user_message, 'ai_response' => $chat->ai_response])->values()),
         storeUrl: '{{ route('chat.store') }}',
         csrfToken: '{{ csrf_token() }}',
+        initialSessionId: '{{ $session?->session_id ?? '' }}',
     })"
 >
     <header class="flex shrink-0 items-center justify-end border-b border-slate-200/80 bg-slate-50/90 px-4 py-3 backdrop-blur-sm lg:px-6">
@@ -55,7 +56,7 @@
                         <div class="flex justify-end">
                             <div
                                 class="max-w-[min(90%,28rem)] rounded-[1.25rem] bg-slate-200/90 px-4 py-3 text-[15px] leading-relaxed text-slate-900 shadow-sm"
-                                x-text="chat.message"
+                                x-text="chat.user_message"
                             ></div>
                         </div>
                         <div class="flex gap-3">
@@ -66,7 +67,7 @@
                             </div>
                             <div class="min-w-0 flex-1 pt-0.5 text-[15px] leading-relaxed text-slate-800">
                                 <span class="sr-only">Assistant</span>
-                                <span class="whitespace-pre-wrap break-words" x-text="chat.response"></span>
+                                <span class="whitespace-pre-wrap break-words" x-text="chat.ai_response"></span>
                             </div>
                         </div>
                     </div>
