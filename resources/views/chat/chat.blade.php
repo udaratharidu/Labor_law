@@ -10,21 +10,12 @@
 >
     <header class="flex shrink-0 items-center justify-end border-b border-slate-200/80 bg-slate-50/90 px-4 py-3 backdrop-blur-sm lg:px-6">
         <div class="flex items-center">
-            @auth
-                <form method="POST" action="{{ route('auth.logout') }}" class="flex items-center">
-                    @csrf
-                    <button type="submit" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50">
-                        Log out
-                    </button>
-                </form>
-            @else
-                <a
-                    href="{{ route('auth.email') }}"
-                    class="inline-flex items-center rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
-                >
-                    Log in
-                </a>
-            @endauth
+            <form method="POST" action="{{ route('logout') }}" class="flex items-center">
+                @csrf
+                <button type="submit" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50">
+                    Log out
+                </button>
+            </form>
         </div>
     </header>
 
@@ -42,11 +33,7 @@
                 </div>
                 <h1 class="text-2xl font-semibold tracking-tight text-slate-900">How can I help?</h1>
                 <p class="mt-2 max-w-md text-[15px] leading-relaxed text-slate-500">
-                    @auth
-                        Ask about consumer protection. Informational only — not legal advice.
-                    @else
-                        Ask a question, or log in to keep chat history.
-                    @endauth
+                    Ask about consumer protection. Informational only — not legal advice.
                 </p>
             </div>
 

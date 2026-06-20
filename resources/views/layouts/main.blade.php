@@ -11,20 +11,38 @@
     @php
         $historyItems = $history ?? collect();
     @endphp
-    <div class="flex h-[100dvh] max-h-[100dvh] min-h-0 overflow-hidden" x-data="{ sidebarCollapsed: false, searchOpen: false, query: '' }">
+    <div class="flex h-[100dvh] max-h-[100dvh] min-h-0 overflow-hidden" x-data="{ sidebarCollapsed: false, sidebarOpen: false, searchOpen: false, query: '' }">
+        <div
+            x-show="sidebarOpen"
+            x-transition.opacity
+            x-cloak
+            class="fixed inset-0 z-30 bg-slate-900/50 lg:hidden"
+            @click="sidebarOpen = false"
+        ></div>
+
         <aside
-            class="flex h-full shrink-0 flex-col border-r border-slate-200/80 bg-slate-50 p-4 transition-all duration-300 lg:p-5"
-            :class="sidebarCollapsed ? 'lg:w-16' : 'lg:w-64'"
+            class="fixed inset-y-0 left-0 z-40 flex h-full w-72 max-w-[85vw] shrink-0 -translate-x-full flex-col border-r border-slate-200/80 bg-slate-50 p-4 transition-all duration-300 lg:static lg:translate-x-0 lg:p-5"
+            :class="[sidebarOpen ? 'translate-x-0' : '-translate-x-full', sidebarCollapsed ? 'lg:w-16' : 'lg:w-64']"
         >
             <div class="mb-6 flex items-center gap-2">
                 <button
                     type="button"
-                    class="rounded-lg p-2 text-blue-700 transition-colors hover:bg-blue-100"
+                    class="hidden rounded-lg p-2 text-blue-700 transition-colors hover:bg-blue-100 lg:inline-flex"
                     aria-label="Toggle sidebar"
                     @click="sidebarCollapsed = !sidebarCollapsed; if (sidebarCollapsed) { searchOpen = false; query = '' }"
                 >
                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <button
+                    type="button"
+                    class="rounded-lg p-2 text-blue-700 transition-colors hover:bg-blue-100 lg:hidden"
+                    aria-label="Close menu"
+                    @click="sidebarOpen = false"
+                >
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
                 <button
@@ -101,6 +119,19 @@
             </nav>
         </aside>
         <main class="flex min-h-0 flex-1 flex-col overflow-hidden bg-slate-50 transition-all duration-300">
+            <div class="flex shrink-0 items-center gap-3 border-b border-slate-200/80 bg-slate-50 px-4 py-3 lg:hidden">
+                <button
+                    type="button"
+                    class="rounded-lg p-2 text-blue-700 transition-colors hover:bg-blue-100"
+                    aria-label="Open menu"
+                    @click="sidebarOpen = true"
+                >
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <span class="text-base font-bold text-blue-700">ConsumerLaw</span>
+            </div>
             {{-- Ensures page content (e.g. chat) can use flex-1 + min-h-0 for a full-height column --}}
             <div class="relative flex min-h-0 flex-1 flex-col overflow-hidden">
                 @yield('content')
