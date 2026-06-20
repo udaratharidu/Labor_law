@@ -16,19 +16,7 @@ class BackendApiClient
 
         $token = config('services.ai_backend.token');
 
-        $request = Http::timeout(20);
-
-        if ($token) {
-            $request = $request->withToken($token);
-        }
-
-        $response = $request->post(rtrim($endpoint, '/').'/ask', [
-            'question' => $message,
-        ]);
-
-        $token = config('services.ai_backend.token');
-
-        $request = Http::timeout(60);
+        $request = Http::timeout(90);
 
         if ($token) {
             $request = $request->withToken($token);
