@@ -14,10 +14,19 @@ class TestUserSeeder extends Seeder
     public function run(): void
     {
         User::query()->updateOrCreate(
-            ['email' => 'testuser@example.com'],
+            ['email' => 'user@ludexora.live'],
             [
-                'name' => 'Test User',
-                'password' => Hash::make('password'),
+                'name' => 'Ludexora User',
+                'password' => Hash::make('Ludex.2021t@ora'),
+                'email_verified_at' => now(),
+            ]
+        );
+
+        User::query()->updateOrCreate(
+            ['email' => 'client@ludexora.live'],
+            [
+                'name' => 'Ludexora Client',
+                'password' => Hash::make('Ludex.2021t@ora'),
                 'email_verified_at' => now(),
             ]
         );
