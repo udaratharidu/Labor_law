@@ -36,7 +36,8 @@ return [
     ],
 
     'ai_backend' => [
-        'url' => env('AI_BACKEND_URL'),
+        'url'   => env('AI_BACKEND_URL'),
+        'token' => env('AI_BACKEND_TOKEN'),
     ],
 
     'legal_api' => [
