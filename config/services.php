@@ -40,4 +40,8 @@ return [
         'token' => env('AI_BACKEND_TOKEN'),
     ],
 
+    'legal_api' => [
+        'url' => env('LEGAL_API_URL', 'http://127.0.0.1:8001/api/public/v1'),
+    ],
+
 ];
