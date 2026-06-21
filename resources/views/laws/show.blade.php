@@ -2,24 +2,28 @@
 
 @section('content')
     <div class="absolute inset-0 flex min-h-0 flex-col overflow-hidden bg-slate-50">
-        <section class="shrink-0 bg-blue-700 px-4 py-8 text-white lg:px-12 lg:py-10">
-            <p class="text-sm font-medium text-blue-100">
-                <a href="{{ route('home') }}" class="hover:underline">Home</a>
-                <span class="px-1">/</span>
-                <a href="{{ route('laws.index') }}" class="hover:underline">Browse Laws</a>
+        <section class="relative shrink-0 overflow-hidden px-4 py-8 text-white lg:px-12 lg:py-10"
+                 style="background: linear-gradient(135deg, #050D1A 0%, #0B1729 50%, #1A3A5C 100%);">
+            <div class="pointer-events-none absolute inset-0 lx-circuit-bg opacity-30"></div>
+            <div class="relative">
+                <p class="text-sm font-medium text-blue-300/70">
+                    <a href="{{ route('home') }}" class="hover:text-blue-200 transition-colors">Home</a>
+                    <span class="px-1 text-blue-400/40">/</span>
+                    <a href="{{ route('laws.index') }}" class="hover:text-blue-200 transition-colors">Browse Laws</a>
+                    @if (! $loadFailed)
+                        <span class="px-1 text-blue-400/40">/</span>
+                        <span class="text-blue-200/80">{{ \Illuminate\Support\Str::limit($act['title'], 40) }}</span>
+                    @endif
+                </p>
                 @if (! $loadFailed)
-                    <span class="px-1">/</span>
-                    {{ $act['title'] }}
+                    <h2 class="lx-brand mt-2 text-2xl font-700 lg:text-4xl">{{ $act['title'] }}</h2>
+                    <span class="mt-3 inline-block rounded-full bg-white/[.08] px-3 py-1 text-xs font-medium capitalize text-white/80 border border-white/10">
+                        {{ $act['status'] }}
+                    </span>
+                @else
+                    <h2 class="lx-brand mt-2 text-2xl font-700 lg:text-4xl">Act not found</h2>
                 @endif
-            </p>
-            @if (! $loadFailed)
-                <h2 class="mt-2 text-2xl font-bold lg:text-4xl">{{ $act['title'] }}</h2>
-                <span class="mt-3 inline-block rounded-full bg-blue-600/40 px-3 py-1 text-xs font-medium capitalize text-white">
-                    {{ $act['status'] }}
-                </span>
-            @else
-                <h2 class="mt-2 text-2xl font-bold lg:text-4xl">Act not found</h2>
-            @endif
+            </div>
         </section>
 
         <div class="min-h-0 flex-1 overflow-y-auto">

@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D1B3E;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#1A3A5C;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#0B2447;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="shieldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#22D3EE;stop-opacity:1"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowSm">
+      <feGaussianBlur stdDeviation="0.8" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Shield body -->
+  <path d="M50 5 L88 18 L88 52 C88 72 71 87 50 95 C29 87 12 72 12 52 L12 18 Z"
+        fill="url(#shieldGrad)" stroke="url(#shieldBorder)" stroke-width="1.5"/>
+
+  <!-- Shield inner border / bevel -->
+  <path d="M50 10 L83 22 L83 52 C83 69 68 83 50 90 C32 83 17 69 17 52 L17 22 Z"
+        fill="none" stroke="rgba(96,165,250,0.20)" stroke-width="0.8"/>
+
+  <!-- Circuit nodes (small dots) -->
+  <g fill="#60A5FA" filter="url(#glowSm)">
+    <circle cx="50" cy="22" r="2.2"/>
+    <circle cx="32" cy="30" r="1.8"/>
+    <circle cx="68" cy="30" r="1.8"/>
+    <circle cx="24" cy="50" r="1.8"/>
+    <circle cx="76" cy="50" r="1.8"/>
+    <circle cx="32" cy="68" r="1.8"/>
+    <circle cx="68" cy="68" r="1.8"/>
+    <circle cx="50" cy="76" r="1.8"/>
+    <!-- Extra corner nodes -->
+    <circle cx="40" cy="26" r="1.2"/>
+    <circle cx="60" cy="26" r="1.2"/>
+    <circle cx="28" cy="40" r="1.2"/>
+    <circle cx="72" cy="40" r="1.2"/>
+    <circle cx="28" cy="60" r="1.2"/>
+    <circle cx="72" cy="60" r="1.2"/>
+    <circle cx="40" cy="72" r="1.2"/>
+    <circle cx="60" cy="72" r="1.2"/>
+  </g>
+
+  <!-- Circuit lines connecting nodes -->
+  <g stroke="rgba(96,165,250,0.35)" stroke-width="0.8" fill="none">
+    <line x1="50" y1="22" x2="40" y2="26"/>
+    <line x1="50" y1="22" x2="60" y2="26"/>
+    <line x1="40" y1="26" x2="32" y2="30"/>
+    <line x1="60" y1="26" x2="68" y2="30"/>
+    <line x1="32" y1="30" x2="28" y2="40"/>
+    <line x1="68" y1="30" x2="72" y2="40"/>
+    <line x1="28" y1="40" x2="24" y2="50"/>
+    <line x1="72" y1="40" x2="76" y2="50"/>
+    <line x1="24" y1="50" x2="28" y2="60"/>
+    <line x1="76" y1="50" x2="72" y2="60"/>
+    <line x1="28" y1="60" x2="32" y2="68"/>
+    <line x1="72" y1="60" x2="68" y2="68"/>
+    <line x1="32" y1="68" x2="40" y2="72"/>
+    <line x1="68" y1="68" x2="60" y2="72"/>
+    <line x1="40" y1="72" x2="50" y2="76"/>
+    <line x1="60" y1="72" x2="50" y2="76"/>
+    <!-- Cross connections -->
+    <line x1="40" y1="26" x2="28" y2="40"/>
+    <line x1="60" y1="26" x2="72" y2="40"/>
+    <line x1="28" y1="60" x2="40" y2="72"/>
+    <line x1="72" y1="60" x2="60" y2="72"/>
+  </g>
+
+  <!-- Scales of justice (centered) -->
+  <g filter="url(#glow)">
+    <!-- Center post -->
+    <line x1="50" y1="30" x2="50" y2="70" stroke="#93C5FD" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Top crossbar -->
+    <line x1="34" y1="38" x2="66" y2="38" stroke="#93C5FD" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Left chain -->
+    <line x1="36" y1="38" x2="34" y2="54" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- Right chain -->
+    <line x1="64" y1="38" x2="66" y2="54" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/>
+
+    <!-- Left pan -->
+    <path d="M28 54 Q34 58 40 54" stroke="#60A5FA" stroke-width="2" fill="rgba(59,130,246,0.25)" stroke-linecap="round"/>
+    <!-- Right pan -->
+    <path d="M60 54 Q66 58 72 54" stroke="#60A5FA" stroke-width="2" fill="rgba(59,130,246,0.25)" stroke-linecap="round"/>
+
+    <!-- Base triangle -->
+    <path d="M44 70 L56 70 L50 67 Z" fill="#60A5FA" opacity="0.8"/>
+
+    <!-- Top pivot circle -->
+    <circle cx="50" cy="30" r="2.5" fill="#3B82F6" stroke="#93C5FD" stroke-width="0.8"/>
+  </g>
+</svg>

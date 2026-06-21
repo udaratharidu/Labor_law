@@ -2,83 +2,220 @@
 @tailwind components;
 @tailwind utilities;
 
-[x-cloak] {
-    display: none !important;
+/* ─── Ludexora brand tokens ─────────────────────────────────────────── */
+:root {
+    --lx-navy-950: #050D1A;
+    --lx-navy-900: #0B1729;
+    --lx-navy-800: #112240;
+    --lx-navy-700: #1A3A5C;
+    --lx-blue-600: #1D4ED8;
+    --lx-blue-500: #3B82F6;
+    --lx-blue-400: #60A5FA;
+    --lx-cyan-400: #22D3EE;
+    --lx-cyan-300: #67E8F9;
+    --lx-glow: rgba(96, 165, 250, 0.15);
 }
 
+/* ─── Utilities ─────────────────────────────────────────────────────── */
+[x-cloak] { display: none !important; }
+
+/* ─── Sidebar scrollbar ──────────────────────────────────────────────── */
 .sidebar-history-scroll {
     scrollbar-width: thin;
-    scrollbar-color: #94a3b8 #e2e8f0;
+    scrollbar-color: rgba(96,165,250,.25) transparent;
 }
-
-.sidebar-history-scroll::-webkit-scrollbar {
-    width: 6px;
-}
-
-.sidebar-history-scroll::-webkit-scrollbar-track {
-    background: #e2e8f0;
-    border-radius: 9999px;
-}
-
+.sidebar-history-scroll::-webkit-scrollbar { width: 4px; }
+.sidebar-history-scroll::-webkit-scrollbar-track { background: transparent; }
 .sidebar-history-scroll::-webkit-scrollbar-thumb {
-    background: #94a3b8;
+    background: rgba(96,165,250,.3);
     border-radius: 9999px;
 }
 
-.thinking-dots {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.2rem;
-}
-
-.thinking-dots span {
-    width: 0.35rem;
-    height: 0.35rem;
-    border-radius: 9999px;
-    background-color: currentColor;
-    animation: thinking-dot-bounce 1.2s infinite ease-in-out;
-}
-
-.thinking-dots span:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.thinking-dots span:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
+/* ─── Chat scrollbar ─────────────────────────────────────────────────── */
 .chat-scroll {
     scrollbar-width: thin;
     scrollbar-color: #cbd5e1 transparent;
 }
-
-.chat-scroll::-webkit-scrollbar {
-    width: 8px;
-}
-
+.chat-scroll::-webkit-scrollbar { width: 6px; }
 .chat-scroll::-webkit-scrollbar-thumb {
-    background-color: #cbd5e1;
+    background: #cbd5e1;
     border-radius: 9999px;
 }
 
-/* Composer: strip @tailwindcss/forms default borders / blue focus ring */
+/* ─── Chat composer textarea (no outline) ────────────────────────────── */
 @layer components {
     .chat-composer-textarea {
         @apply border-0 shadow-none ring-0 outline-none;
     }
-
     .chat-composer-textarea:focus {
         @apply border-0 shadow-none ring-0 outline-none;
     }
 }
 
-@keyframes thinking-dot-bounce {
-    0%, 80%, 100% {
-        opacity: 0.25;
-        transform: translateY(0);
-    }
-    40% {
-        opacity: 1;
-        transform: translateY(-3px);
-    }
+/* ─── Thinking dots animation ────────────────────────────────────────── */
+.thinking-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+.thinking-dots span {
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 9999px;
+    background-color: currentColor;
+    animation: lx-dot-bounce 1.2s infinite ease-in-out;
+}
+.thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
+.thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes lx-dot-bounce {
+    0%, 80%, 100% { opacity: .25; transform: translateY(0); }
+    40%           { opacity: 1;   transform: translateY(-3px); }
+}
+
+/* ─── Sidebar nav glow hover ─────────────────────────────────────────── */
+.lx-nav-link {
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+}
+.lx-nav-link:hover {
+    background: rgba(96,165,250,.10);
+    box-shadow: inset 3px 0 0 #60A5FA;
+}
+.lx-nav-link.active {
+    background: rgba(96,165,250,.15);
+    box-shadow: inset 3px 0 0 #60A5FA;
+    color: #93C5FD;
+}
+
+/* ─── Logo Y-axis flip (auth pages) ──────────────────────────────────── */
+.lx-logo-spin {
+    display: inline-block;
+    animation: lx-flip-y 5s linear infinite;
+    transform-style: preserve-3d;
+}
+@keyframes lx-flip-y {
+    from { transform: perspective(500px) rotateY(0deg); }
+    to   { transform: perspective(500px) rotateY(360deg); }
+}
+
+/* ─── Feature card hover lift ────────────────────────────────────────── */
+.lx-feature-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.lx-feature-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px -8px rgba(30,84,220,.18);
+}
+
+/* ─── Glow pulse on logo ─────────────────────────────────────────────── */
+@keyframes lx-glow-pulse {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(96,165,250,.5)); }
+    50%       { filter: drop-shadow(0 0 20px rgba(96,165,250,.9)); }
+}
+.lx-logo-glow { animation: lx-glow-pulse 3s ease-in-out infinite; }
+
+/* ─── Auth split panel gradient ──────────────────────────────────────── */
+.lx-auth-panel {
+    background: linear-gradient(145deg, #050D1A 0%, #0B1729 40%, #112240 70%, #1A3A5C 100%);
+}
+
+/* ─── Circuit grid decoration ────────────────────────────────────────── */
+.lx-circuit-bg {
+    background-image:
+        radial-gradient(circle, rgba(96,165,250,.12) 1px, transparent 1px);
+    background-size: 28px 28px;
+}
+
+/* ─── Input focus ring (Ludexora blue) ───────────────────────────────── */
+.lx-input:focus {
+    outline: none;
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+}
+
+/* ─── Primary button shine ───────────────────────────────────────────── */
+.lx-btn-primary {
+    background: linear-gradient(135deg, #1D4ED8 0%, #3B82F6 100%);
+    transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.lx-btn-primary:hover {
+    opacity: .93;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px -4px rgba(59,130,246,.5);
+}
+.lx-btn-primary:active { transform: translateY(0); }
+
+/* ─── Badge ──────────────────────────────────────────────────────────── */
+.lx-badge {
+    background: rgba(34,211,238,.12);
+    color: #22D3EE;
+    border: 1px solid rgba(34,211,238,.25);
+}
+
+/* ─── Scroll fade at bottom of chat ─────────────────────────────────── */
+.lx-chat-fade {
+    background: linear-gradient(to top, #fff 0%, rgba(255,255,255,.9) 60%, transparent 100%);
+}
+
+/* ─── Prose (markdown in AI replies) ────────────────────────────────── */
+.lx-prose { font-size: inherit; color: inherit; line-height: inherit; }
+.lx-prose > *:last-child { margin-bottom: 0 !important; }
+.lx-prose p { margin-bottom: 0.6em; }
+.lx-prose h1, .lx-prose h2, .lx-prose h3, .lx-prose h4 {
+    font-weight: 600; line-height: 1.3; margin-top: 1em; margin-bottom: 0.4em; color: #0f172a;
+}
+.lx-prose h1 { font-size: 1.2em; }
+.lx-prose h2 { font-size: 1.1em; }
+.lx-prose h3 { font-size: 1em; }
+.lx-prose strong { font-weight: 600; color: #1e293b; }
+.lx-prose em { font-style: italic; }
+.lx-prose ul { list-style: disc; padding-left: 1.4em; margin-bottom: 0.6em; }
+.lx-prose ol { list-style: decimal; padding-left: 1.4em; margin-bottom: 0.6em; }
+.lx-prose li { margin-bottom: 0.25em; }
+.lx-prose li > p { margin-bottom: 0.25em; }
+.lx-prose code {
+    font-family: ui-monospace, 'Cascadia Code', Menlo, monospace;
+    font-size: 0.85em;
+    background: rgba(15,23,42,.07);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    color: #1e40af;
+}
+.lx-prose pre {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.75em 1em;
+    overflow-x: auto;
+    margin-bottom: 0.75em;
+}
+.lx-prose pre code { background: none; padding: 0; color: #334155; }
+.lx-prose blockquote {
+    border-left: 3px solid #93C5FD;
+    padding-left: 0.75em;
+    color: #64748b;
+    font-style: italic;
+    margin-bottom: 0.6em;
+}
+.lx-prose a { color: #2563eb; text-decoration: underline; }
+.lx-prose a:hover { color: #1d4ed8; }
+.lx-prose hr { border: none; border-top: 1px solid #e2e8f0; margin: 1em 0; }
+.lx-prose table { border-collapse: collapse; width: 100%; margin-bottom: 0.75em; font-size: 0.875em; }
+.lx-prose th, .lx-prose td { padding: 0.4em 0.6em; border: 1px solid #e2e8f0; text-align: left; }
+.lx-prose th { background: #f8fafc; font-weight: 600; }
+
+/* ─── Typing cursor (AI response animation) ──────────────────────────── */
+.lx-typing-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: #3B82F6;
+    margin-left: 1px;
+    vertical-align: middle;
+    border-radius: 1px;
+    animation: lx-cursor-blink 0.85s step-end infinite;
+}
+@keyframes lx-cursor-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
 }
