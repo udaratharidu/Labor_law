@@ -19,7 +19,7 @@ class ChatController extends Controller
             : ChatSession::where('user_id', $userId)->latest('id')->first();
 
         $chats = $session
-            ? $session->chats()->orderBy('created_at')->get()
+            ? $session->chats()->orderBy('created_at')->take(100)->get()
             : collect();
 
         return view('chat.index', [
@@ -84,7 +84,7 @@ class ChatController extends Controller
 
         return ChatSession::where('user_id', $userId)
             ->latest('id')
-            ->take(30)
+            ->take(50)
             ->get(['id', 'session_id', 'chat_title', 'created_at']);
     }
 }
