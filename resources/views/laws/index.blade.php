@@ -2,24 +2,26 @@
 
 @section('content')
     <div class="absolute inset-0 flex min-h-0 flex-col overflow-hidden bg-slate-50">
-        <section class="shrink-0 bg-blue-700 px-4 py-8 text-white lg:px-12 lg:py-10">
-            <p class="text-sm font-medium text-blue-100">
-                <a href="{{ route('home') }}" class="hover:underline">Home</a>
-                <span class="px-1">/</span>
-                Browse Laws
-            </p>
-            <h2 class="mt-2 text-2xl font-bold lg:text-4xl">Browse Laws</h2>
-            <p class="mt-2 max-w-2xl text-blue-100">Acts currently available in the legal database.</p>
+        <section class="relative shrink-0 overflow-hidden px-4 py-8 text-white lg:px-12 lg:py-10"
+                 style="background: linear-gradient(135deg, #050D1A 0%, #0B1729 50%, #1A3A5C 100%);">
+            <div class="pointer-events-none absolute inset-0 lx-circuit-bg opacity-30"></div>
+            <div class="relative">
+                <p class="text-sm font-medium text-blue-300/70">
+                    <a href="{{ route('home') }}" class="hover:text-blue-200 transition-colors">Home</a>
+                    <span class="px-1 text-blue-400/40">/</span>
+                    Browse Laws
+                </p>
+                <h2 class="lx-brand mt-2 text-2xl font-700 lg:text-4xl">Browse Laws &amp; Regulations</h2>
+                <p class="mt-2 max-w-2xl text-blue-100/60">Acts currently available in the Ludexora legal database.</p>
 
-            <div class="mt-5 flex flex-wrap gap-2">
-                @foreach (['' => 'All', 'active' => 'Active', 'amended' => 'Amended', 'repealed' => 'Repealed'] as $value => $label)
-                    <a
-                        href="{{ route('laws.index', array_filter(['status' => $value])) }}"
-                        class="rounded-full px-4 py-1.5 text-sm font-medium transition-colors {{ (string) $status === $value ? 'bg-white text-blue-700' : 'bg-blue-600/40 text-white hover:bg-blue-600/70' }}"
-                    >
-                        {{ $label }}
-                    </a>
-                @endforeach
+                <div class="mt-5 flex flex-wrap gap-2">
+                    @foreach (['' => 'All', 'active' => 'Active', 'amended' => 'Amended', 'repealed' => 'Repealed'] as $value => $label)
+                        <a href="{{ route('laws.index', array_filter(['status' => $value])) }}"
+                           class="rounded-full px-4 py-1.5 text-sm font-medium transition-colors {{ (string) $status === $value ? 'bg-white text-slate-900' : 'bg-white/[.08] text-white/80 hover:bg-white/[.15]' }}">
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </div>
             </div>
         </section>
 
@@ -39,7 +41,7 @@
                         @foreach ($acts as $act)
                             <a
                                 href="{{ route('laws.show', $act['act_id']) }}"
-                                class="block rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm ring-1 ring-slate-100 transition hover:border-blue-200 hover:shadow-md"
+                                class="lx-feature-card block rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm ring-1 ring-slate-100 hover:border-blue-200 hover:shadow-md no-underline"
                             >
                                 <div class="flex items-start justify-between gap-3">
                                     <div>
@@ -71,7 +73,7 @@
                             @for ($page = 1; $page <= $meta['last_page']; $page++)
                                 <a
                                     href="{{ route('laws.index', array_filter(['status' => $status, 'page' => $page])) }}"
-                                    class="rounded-lg px-3 py-1.5 text-sm font-medium {{ $page === $meta['current_page'] ? 'bg-blue-700 text-white' : 'bg-white text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50' }}"
+                                    class="rounded-lg px-3 py-1.5 text-sm font-medium {{ $page === $meta['current_page'] ? 'text-white shadow-sm' : 'bg-white text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50' }}" @if($page === $meta['current_page']) style="background:linear-gradient(135deg,#1D4ED8,#3B82F6)" @endif
                                 >
                                     {{ $page }}
                                 </a>
