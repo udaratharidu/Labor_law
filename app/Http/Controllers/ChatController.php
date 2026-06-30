@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Chat;
 use App\Models\ChatSession;
 use App\Services\BackendApiClient;
 use Illuminate\Http\Request;
@@ -64,6 +65,12 @@ class ChatController extends Controller
         }
 
         $aiResponse = $apiClient->sendChatMessage($validated['message'], $userId, $session->session_id);
+
+        Chat::create([
+            'chat_session_id' => $session->session_id,
+            'user_message'    => $validated['message'],
+            'ai_response'     => $aiResponse,
+        ]);
 
         if ($request->expectsJson()) {
             return response()->json([

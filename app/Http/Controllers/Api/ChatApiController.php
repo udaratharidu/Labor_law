@@ -100,8 +100,25 @@ class ChatApiController extends Controller
             'ai_response'  => ['required', 'string'],
         ]);
 
-        // verify session exists
         ChatSession::where('session_id', $sessionId)->firstOrFail();
+
+        // Idempotency guard: if the web controller already stored this exchange
+        // within the last 2 minutes (same session + same user message), return
+        // the existing record instead of creating a duplicate.
+        $existing = Chat::where('chat_session_id', $sessionId)
+            ->where('user_message', $validated['user_message'])
+            ->where('created_at', '>=', now()->subMinutes(2))
+            ->first();
+
+        if ($existing) {
+            return response()->json([
+                'id'              => $existing->id,
+                'chat_session_id' => $existing->chat_session_id,
+                'user_message'    => $existing->user_message,
+                'ai_response'     => $existing->ai_response,
+                'created_at'      => $existing->created_at,
+            ]);
+        }
 
         $chat = Chat::create([
             'chat_session_id' => $sessionId,
@@ -135,15 +152,9 @@ class ChatApiController extends Controller
      * Get all chats for a session (user_id verified via session ownership).
      * GET /api/chat/sessions/{session_id}/chats?user_id=
      */
-    public function getChats(Request $request, string $sessionId): JsonResponse
+    public function getChats(string $sessionId): JsonResponse
     {
-        //$validated = $request->validate([
-        //    'user_id' => ['required', 'integer', 'exists:users,id'],
-        //]);
-
-        $session = ChatSession::where('session_id', $sessionId)
-            //->where('user_id', $validated['user_id'])
-            ->firstOrFail();
+        $session = ChatSession::where('session_id', $sessionId)->firstOrFail();
 
         $chats = $session->chats()
             ->where('is_summarized', false)
