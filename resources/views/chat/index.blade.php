@@ -53,6 +53,9 @@
                 formData.append('message', message);
                 formData.append('session_id', this.currentSessionId);
 
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 90000);
+
                 try {
                     const res = await fetch(storeUrl, {
                         method: 'POST',
@@ -62,7 +65,10 @@
                             'X-Requested-With': 'XMLHttpRequest',
                         },
                         body: formData,
+                        signal: controller.signal,
                     });
+
+                    clearTimeout(timeoutId);
 
                     if (!res.ok) throw new Error('Network error');
                     const data = await res.json();
@@ -77,9 +83,14 @@
                     this.chats[idx].typing = false;
 
                 } catch (e) {
+                    clearTimeout(timeoutId);
                     this.loading = false;
                     this.chats.splice(idx, 1);
-                    this.errorMessage = 'Could not get a response. Please try again.';
+                    if (e.name === 'AbortError') {
+                        this.errorMessage = 'The request timed out. The server is taking too long — please try again.';
+                    } else {
+                        this.errorMessage = 'Could not get a response. Please try again.';
+                    }
                 }
             },
 
